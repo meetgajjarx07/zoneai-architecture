@@ -3,41 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ZoneAI — System Architecture</title>
+<title>ZoneAI — Complete System Architecture</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#fafaf9;font-family:'Inter',system-ui,sans-serif;display:flex;justify-content:center;padding:24px 16px;min-height:100vh;-webkit-font-smoothing:antialiased}
-svg{width:100%;max-width:1260px;height:auto;display:block}
+svg{width:100%;max-width:1400px;height:auto;display:block}
 </style>
 </head>
 <body>
-<svg viewBox="0 0 1260 1080" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 1400 1460" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <marker id="ah" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#6b7280"/></marker>
   <marker id="ahB" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#2563eb"/></marker>
   <marker id="ahO" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#ea580c"/></marker>
   <marker id="ahG" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#059669"/></marker>
   <marker id="ahP" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#7c3aed"/></marker>
+  <marker id="ahT" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#0d9488"/></marker>
+  <marker id="ahI" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#6366f1"/></marker>
   <marker id="ahGS" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="9" markerHeight="7" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#059669"/></marker>
+  <marker id="ahR" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="6" orient="auto"><path d="M0,0 L10,4 L0,8Z" fill="#dc2626"/></marker>
 
-  <!-- Depth shadow for section boxes -->
   <filter id="sectionShadow" x="-2%" y="-1%" width="104%" height="106%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity=".06"/>
   </filter>
-  <!-- Glow for agent section -->
   <filter id="agentGlow" x="-3%" y="-3%" width="106%" height="106%">
     <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#d97706" flood-opacity=".15"/>
   </filter>
-  <!-- Card shadow -->
   <filter id="cardShadow" x="-3%" y="-4%" width="106%" height="112%">
     <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity=".04"/>
+  </filter>
+  <filter id="agenticGlow" x="-3%" y="-3%" width="106%" height="106%">
+    <feDropShadow dx="0" dy="2" stdDeviation="5" flood-color="#6366f1" flood-opacity=".12"/>
   </filter>
 
   <style>
     text{font-family:'Inter',system-ui,sans-serif}
-    .title{font-size:24px;font-weight:800;fill:#111827}
-    .title-accent{font-size:24px;font-weight:800;fill:#dc2626}
+    .title{font-size:26px;font-weight:800;fill:#111827}
+    .title-accent{font-size:26px;font-weight:800;fill:#dc2626}
     .subtitle{font-size:10.5px;font-weight:500;fill:#9ca3af;letter-spacing:.3px}
     .zone-title{font-size:13px;font-weight:700;fill:#0d9488;letter-spacing:.5px}
     .section-title{font-size:12px;font-weight:700;letter-spacing:.3px}
@@ -50,28 +53,44 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
     .section-label{font-size:8.5px;font-weight:700;letter-spacing:.4px}
     .ext-label{font-size:11px;font-weight:600;fill:#374151}
     .step{font-size:9px;font-weight:800;fill:#fff;text-anchor:middle;dominant-baseline:central}
+    @keyframes flowDash{to{stroke-dashoffset:-18}}
+    @keyframes particlePulse{0%,100%{opacity:.6;r:4}50%{opacity:.9;r:5.5}}
+    [marker-end]{stroke-dasharray:6 3;animation:flowDash 1.5s linear infinite}
     .arr{fill:none;stroke:#9ca3af;stroke-width:1.5;marker-end:url(#ah)}
     .arr-b{fill:none;stroke:#2563eb;stroke-width:1.5;marker-end:url(#ahB)}
     .arr-o{fill:none;stroke:#ea580c;stroke-width:1.4;stroke-dasharray:5 3;marker-end:url(#ahO)}
     .arr-g{fill:none;stroke:#059669;stroke-width:1.4;stroke-dasharray:5 3;marker-end:url(#ahG)}
     .arr-p{fill:none;stroke:#7c3aed;stroke-width:1.5;marker-end:url(#ahP)}
+    .arr-i{fill:none;stroke:#6366f1;stroke-width:1.5;marker-end:url(#ahI)}
   </style>
+
+  <!-- Apple shimmer gradient for "Designed & Built" -->
+  <linearGradient id="shimmer" gradientUnits="userSpaceOnUse" x1="400" y1="0" x2="1000" y2="0">
+    <stop offset="0%" stop-color="#1e293b"/>
+    <stop offset="36%" stop-color="#1e293b"/>
+    <stop offset="43%" stop-color="#dc2626"/>
+    <stop offset="50%" stop-color="#fbbf24"/>
+    <stop offset="57%" stop-color="#dc2626"/>
+    <stop offset="64%" stop-color="#1e293b"/>
+    <stop offset="100%" stop-color="#1e293b"/>
+    <animateTransform attributeName="gradientTransform" type="translate" values="-600 0;600 0" dur="3s" repeatCount="indefinite"/>
+  </linearGradient>
 </defs>
 
 <!-- Background -->
-<rect x="0" y="0" width="1260" height="1080" fill="#fafaf9"/>
+<rect x="0" y="0" width="1400" height="1460" fill="#fafaf9"/>
 
-<!-- ════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════
      TITLE
-     ════════════════════════════════════════════════════════════ -->
+     ════════════════════════════════════════════════ -->
 <text class="title-accent" x="24" y="32">ZoneAI</text>
-<text class="title" x="120" y="32">System Architecture</text>
-<text class="subtitle" x="24" y="48">Multi-Agent RAG Pipeline · Claude Sonnet 4 Tool-Use · Hybrid Retrieval · 3-Tier Citation Verification · District-Aware Extraction</text>
+<text class="title" x="120" y="32">Complete System Architecture</text>
+<text class="subtitle" x="24" y="48">LangGraph v2 Pipeline · Claude Sonnet 4 · Hybrid Retrieval (BM25 + Dense + RRF + Rerank) · Task Planner · Human-in-the-Loop · MCP Server · Memory Layer</text>
 
 
-<!-- ════════════════════════════════════════════════════════════
-     USERS — Left side, proper card
-     ════════════════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════
+     USERS — Left side top
+     ════════════════════════════════════════════════ -->
 <g transform="translate(10,100)">
   <rect x="0" y="0" width="78" height="88" rx="8" fill="#f5f3ff" stroke="#6366f1" stroke-width="1.4" filter="url(#cardShadow)"/>
   <circle cx="32" cy="22" r="10" fill="none" stroke="#6366f1" stroke-width="1.8"/>
@@ -84,11 +103,8 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
 <path class="arr" d="M90,148 L126,148"/>
 <text class="label-sm" x="107" y="141">PDF</text>
 
-
-<!-- ════════════════════════════════════════════════════════════
-     NEXT.JS FRONTEND — Left side, proper card
-     ════════════════════════════════════════════════════════════ -->
-<g transform="translate(10,860)">
+<!-- NEXT.JS FRONTEND — Left side bottom -->
+<g transform="translate(10,1180)">
   <rect x="0" y="0" width="78" height="88" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="1.4" filter="url(#cardShadow)"/>
   <rect x="14" y="10" width="50" height="34" rx="4" fill="none" stroke="#059669" stroke-width="1.6"/>
   <line x1="22" y1="19" x2="42" y2="19" stroke="#059669" stroke-width="1.2" opacity=".4"/>
@@ -98,21 +114,18 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <text class="ext-label" x="39" y="62" text-anchor="middle">Next.js 14</text>
   <text class="label-sm" x="39" y="76" text-anchor="middle">Frontend</text>
 </g>
-<path class="arr-g" d="M126,904 L90,904"/>
-<text class="label-sm" x="107" y="897" text-anchor="middle" fill="#059669">SSE stream</text>
+<path class="arr-g" d="M126,1224 L90,1224"/>
+<text class="label-sm" x="107" y="1217" text-anchor="middle" fill="#059669">SSE stream</text>
 
 
-<!-- ════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════
      OUTER SYSTEM BOUNDARY — Teal dashed
-     ════════════════════════════════════════════════════════════ -->
-<rect x="108" y="60" width="680" height="980" rx="6" fill="#f0fdfa" stroke="#0d9488" stroke-width="2" stroke-dasharray="8 4"/>
+     ════════════════════════════════════════════════ -->
+<rect x="108" y="60" width="730" height="1292" rx="6" fill="#f0fdfa" stroke="#0d9488" stroke-width="2" stroke-dasharray="8 4"/>
 <text class="zone-title" x="128" y="80">ZoneAI Pipeline</text>
 
-
-<!-- ════════════════════════════════════════════════════════════
-     FASTAPI BACKEND — Blue solid, shadow
-     ════════════════════════════════════════════════════════════ -->
-<rect x="122" y="90" width="652" height="940" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#sectionShadow)"/>
+<!-- FASTAPI BACKEND — Blue solid -->
+<rect x="122" y="90" width="702" height="1250" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="2" filter="url(#sectionShadow)"/>
 <g transform="translate(137,108)">
   <rect x="0" y="0" width="18" height="14" rx="3" fill="#2563eb"/>
   <line x1="4" y1="4" x2="9" y2="4" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/>
@@ -120,16 +133,15 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <circle cx="14" cy="5" r="1.8" fill="#fff"/>
 </g>
 <text class="section-title" x="162" y="119" fill="#2563eb">FastAPI Backend</text>
-<text class="box-detail" x="278" y="119">Python 3.12 · localhost:8000</text>
+<text class="box-detail" x="278" y="119">Python 3.11 · localhost:8000 · 15 endpoints</text>
 
 
-<!-- ┌──────────────────────────────────────────────────┐ -->
-<!-- │  INGESTION — Orange dashed                       │ -->
-<!-- └──────────────────────────────────────────────────┘ -->
-<rect x="138" y="130" width="620" height="115" rx="4" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
+<!-- ════════════════════════════════════════════════
+     INGESTION — Orange dashed
+     ════════════════════════════════════════════════ -->
+<rect x="138" y="130" width="672" height="115" rx="4" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
 <text class="section-label" x="153" y="146" fill="#ea580c">INGESTION</text>
 
-<!-- Step 1 -->
 <circle cx="165" cy="180" r="12" fill="#ea580c"/><text class="step" x="165" y="180">1</text>
 
 <!-- Upload API -->
@@ -138,14 +150,11 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <rect x="38" y="6" width="54" height="26" rx="3" fill="#dbeafe"/>
   <rect x="44" y="10" width="40" height="4" rx="1" fill="#2563eb" opacity=".3"/>
   <rect x="44" y="18" width="30" height="4" rx="1" fill="#2563eb" opacity=".3"/>
-  <rect x="44" y="26" width="20" height="4" rx="1" fill="#2563eb" opacity=".15"/>
   <text class="box-title" x="65" y="44" text-anchor="middle">Upload API</text>
-  <text class="box-sub" x="65" y="56" text-anchor="middle">Validation · Router</text>
+  <text class="box-sub" x="65" y="56" text-anchor="middle">POST /api/analyze</text>
 </g>
 
 <line class="arr" x1="317" y1="191" x2="348" y2="191"/>
-
-<!-- Step 2 -->
 <circle cx="360" cy="180" r="12" fill="#ea580c"/><text class="step" x="360" y="180">2</text>
 
 <!-- PDF Parser -->
@@ -155,61 +164,53 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <path d="M60,5 L68,13 L60,13Z" fill="#93c5fd"/>
   <line x1="46" y1="17" x2="60" y2="17" stroke="#2563eb" stroke-width="1" opacity=".4"/>
   <line x1="46" y1="21" x2="56" y2="21" stroke="#2563eb" stroke-width="1" opacity=".4"/>
-  <line x1="46" y1="25" x2="52" y2="25" stroke="#2563eb" stroke-width="1" opacity=".25"/>
   <text class="box-title" x="65" y="47" text-anchor="middle">PDF Parser</text>
-  <text class="box-sub" x="65" y="59" text-anchor="middle">PyMuPDF · 150 DPI</text>
+  <text class="box-sub" x="65" y="59" text-anchor="middle">PyMuPDF · pdfplumber</text>
 </g>
 
 <line class="arr" x1="512" y1="191" x2="536" y2="191"/>
 
-<!-- SHA-256 Cache -->
+<!-- Section Detect -->
 <g transform="translate(540,157)">
-  <rect x="0" y="0" width="100" height="68" rx="4" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4 2" filter="url(#cardShadow)"/>
-  <ellipse cx="50" cy="14" rx="14" ry="5" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
-  <path d="M36,14 L36,26 Q50,34 64,26 L64,14" fill="#dbeafe" stroke="#2563eb" stroke-width="1"/>
-  <text class="box-title" x="50" y="44" text-anchor="middle">SHA-256 Cache</text>
-  <text class="box-sub" x="50" y="56" text-anchor="middle">hash_index.json</text>
+  <rect x="0" y="0" width="120" height="68" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <text class="box-title" x="60" y="24" text-anchor="middle">Section Detection</text>
+  <text class="box-sub" x="60" y="38" text-anchor="middle">Chapter → Section → Sub</text>
+  <text class="box-detail" x="60" y="50" text-anchor="middle">Regex hierarchy · L1/L2/L3</text>
 </g>
 
 <!-- Page Images -->
-<g transform="translate(660,157)">
-  <rect x="0" y="0" width="90" height="68" rx="4" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4 2" filter="url(#cardShadow)"/>
-  <rect x="22" y="6" width="46" height="28" rx="3" fill="#dbeafe"/>
-  <circle cx="34" cy="16" r="4" fill="#93c5fd"/>
-  <path d="M24,30 L38,20 L52,26 L62,18 L68,30Z" fill="#3b82f6" opacity=".25"/>
-  <text class="box-title" x="45" y="46" text-anchor="middle">Page Images</text>
-  <text class="box-sub" x="45" y="57" text-anchor="middle">150 DPI PNGs</text>
-  <text class="box-detail" x="45" y="66" text-anchor="middle">tables · maps</text>
+<g transform="translate(680,157)">
+  <rect x="0" y="0" width="120" height="68" rx="4" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4 2" filter="url(#cardShadow)"/>
+  <rect x="30" y="6" width="46" height="28" rx="3" fill="#dbeafe"/>
+  <circle cx="42" cy="16" r="4" fill="#93c5fd"/>
+  <path d="M32,30 L46,20 L60,26 L70,18 L76,30Z" fill="#3b82f6" opacity=".25"/>
+  <text class="box-title" x="60" y="46" text-anchor="middle">Page Images</text>
+  <text class="box-sub" x="60" y="57" text-anchor="middle">150 DPI PNGs</text>
 </g>
-<!-- render PNGs arc above cache -->
-<path d="M443,157 L443,149 L705,149 L705,157" fill="none" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ahB)"/>
-<text class="label-sm" x="574" y="146" text-anchor="middle" fill="#2563eb">render PNGs</text>
 
 
-<!-- ┌──────────────────────────────────────────────────┐ -->
-<!-- │  CHUNKING & RETRIEVAL — Purple dashed            │ -->
-<!-- └──────────────────────────────────────────────────┘ -->
-<rect x="138" y="262" width="620" height="180" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
+<!-- ════════════════════════════════════════════════
+     CHUNKING & RETRIEVAL — Purple dashed
+     ════════════════════════════════════════════════ -->
+<rect x="138" y="262" width="672" height="180" rx="4" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
 <text class="section-label" x="153" y="278" fill="#7c3aed">CHUNKING &amp; RETRIEVAL</text>
 
 <line class="arr" x1="448" y1="245" x2="448" y2="260"/>
 
-<!-- Step 3 -->
 <circle cx="165" cy="310" r="12" fill="#ea580c"/><text class="step" x="165" y="310">3</text>
 
 <!-- 4-Strategy Chunker -->
 <g transform="translate(183,290)">
-  <rect x="0" y="0" width="230" height="62" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="78" y="5" width="74" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
-  <rect x="82" y="15" width="66" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
-  <rect x="86" y="25" width="58" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
-  <text class="box-title" x="115" y="46" text-anchor="middle">4-Strategy Chunker</text>
-  <text class="box-sub" x="115" y="56" text-anchor="middle">Parent · Child · Summary · Overlap</text>
+  <rect x="0" y="0" width="250" height="62" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="68" y="5" width="114" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
+  <rect x="74" y="15" width="102" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
+  <rect x="80" y="25" width="90" height="8" rx="2" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".6"/>
+  <text class="box-title" x="125" y="46" text-anchor="middle">4-Strategy Chunker</text>
+  <text class="box-sub" x="125" y="56" text-anchor="middle">Parent (3000c) · Child (800c) · Summary · Overlap (200c)</text>
 </g>
 
-<line class="arr" x1="298" y1="352" x2="298" y2="370"/>
+<line class="arr" x1="308" y1="352" x2="308" y2="370"/>
 
-<!-- Step 4 -->
 <circle cx="165" cy="400" r="12" fill="#ea580c"/><text class="step" x="165" y="400">4</text>
 
 <!-- BM25 -->
@@ -221,405 +222,554 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <text class="box-sub" x="60" y="42" text-anchor="middle">Keyword · Top-20</text>
 </g>
 
-<!-- Embedding Cache -->
+<!-- Voyage Embed -->
 <g transform="translate(318,380)">
-  <rect x="0" y="0" width="110" height="50" rx="4" fill="#fff" stroke="#c4b5fd" stroke-width="1" stroke-dasharray="4 2" filter="url(#cardShadow)"/>
-  <ellipse cx="55" cy="11" rx="12" ry="4" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".8"/>
-  <path d="M43,11 L43,20 Q55,26 67,20 L67,11" fill="#e9d5ff" stroke="#7c3aed" stroke-width=".8"/>
-  <text class="box-title" x="55" y="34" text-anchor="middle">Embed Cache</text>
-  <text class="box-sub" x="55" y="44" text-anchor="middle">.npy cached</text>
+  <rect x="0" y="0" width="140" height="50" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="22" y="5" width="96" height="14" rx="3" fill="#e9d5ff"/>
+  <text font-size="8" font-weight="800" fill="#7c3aed" x="70" y="15" text-anchor="middle">VOYAGE-3-LARGE</text>
+  <text class="box-title" x="70" y="32" text-anchor="middle">Dense Embeddings</text>
+  <text class="box-sub" x="70" y="42" text-anchor="middle">1024-dim vectors</text>
 </g>
 
-<!-- Voyage Embeddings -->
-<g transform="translate(443,380)">
-  <rect x="0" y="0" width="120" height="50" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="22" y="5" width="76" height="14" rx="3" fill="#e9d5ff"/>
-  <text font-size="8" font-weight="800" fill="#7c3aed" x="60" y="15" text-anchor="middle">VECTOR</text>
-  <text class="box-title" x="60" y="32" text-anchor="middle">Voyage Embed</text>
-  <text class="box-sub" x="60" y="42" text-anchor="middle">1024-dim · Top-20</text>
-</g>
-
-<!-- Step 5 -->
-<circle cx="588" cy="400" r="12" fill="#ea580c"/><text class="step" x="588" y="400">5</text>
+<circle cx="492" cy="400" r="12" fill="#ea580c"/><text class="step" x="492" y="400">5</text>
 
 <!-- RRF + Rerank -->
-<g transform="translate(606,380)">
-  <rect x="0" y="0" width="138" height="50" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="138" height="14" rx="4" fill="#7c3aed" opacity=".08"/>
-  <text font-size="7.5" font-weight="700" fill="#7c3aed" x="69" y="11" text-anchor="middle">Fusion Engine</text>
-  <text class="box-title" x="69" y="28" text-anchor="middle">RRF + Rerank-2</text>
-  <text class="box-sub" x="69" y="40" text-anchor="middle">k=60 · Cross-encoder · Top-10</text>
+<g transform="translate(510,380)">
+  <rect x="0" y="0" width="148" height="50" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="148" height="14" rx="4" fill="#7c3aed" opacity=".08"/>
+  <text font-size="7.5" font-weight="700" fill="#7c3aed" x="74" y="11" text-anchor="middle">Fusion Engine</text>
+  <text class="box-title" x="74" y="28" text-anchor="middle">RRF + Rerank-2</text>
+  <text class="box-sub" x="74" y="40" text-anchor="middle">k=60 · Cross-encoder · Top-K</text>
 </g>
 
-<!-- Bus line: BM25 + Embed + Voyage → RRF -->
+<!-- Bus line: BM25 + Embed → RRF -->
 <line x1="243" y1="430" x2="243" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
-<line x1="373" y1="430" x2="373" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
-<line x1="503" y1="430" x2="503" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
-<line x1="243" y1="440" x2="600" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
-<path d="M600,440 L600,405 L604,405" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ah)"/>
+<line x1="388" y1="430" x2="388" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
+<line x1="243" y1="440" x2="508" y2="440" stroke="#9ca3af" stroke-width="1.5"/>
+<path d="M508,440 L508,405" fill="none" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ah)"/>
+
+<!-- Parent context -->
+<g transform="translate(678,380)">
+  <rect x="0" y="0" width="120" height="50" rx="4" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4 2" filter="url(#cardShadow)"/>
+  <text class="box-title" x="60" y="20" text-anchor="middle">Parent Context</text>
+  <text class="box-sub" x="60" y="32" text-anchor="middle">child → parent map</text>
+  <text class="box-detail" x="60" y="44" text-anchor="middle">fuller extraction context</text>
+</g>
+<line class="arr" x1="660" y1="405" x2="676" y2="405"/>
 
 
-<!-- ┌──────────────────────────────────────────────────────────────┐ -->
-<!-- │  AGENT ORCHESTRATION — THE HERO — Double border + glow      │ -->
-<!-- └──────────────────────────────────────────────────────────────┘ -->
-<!-- Outer glow border -->
-<rect x="135" y="457" width="626" height="344" rx="6" fill="none" stroke="#d97706" stroke-width=".6" stroke-dasharray="4 4" opacity=".3"/>
-<!-- Main section -->
-<rect x="138" y="460" width="620" height="340" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2.5" stroke-dasharray="7 3" filter="url(#agentGlow)"/>
-<!-- Accent bar -->
-<rect x="138" y="460" width="620" height="20" rx="5" fill="#d97706" opacity=".1"/>
-<text class="section-label" x="153" y="475" fill="#d97706" font-size="9">AGENT ORCHESTRATION — Claude Sonnet 4 · Tool-Use Loops</text>
+<!-- ════════════════════════════════════════════════════════════
+     AGENT ORCHESTRATION — THE HERO
+     Actual LangGraph: START → ingest → plan → extract_topic ×N
+       ↔ check_coverage (gap-fill) → finalize → END
+     ════════════════════════════════════════════════════════════ -->
+<rect x="135" y="457" width="678" height="382" rx="6" fill="none" stroke="#d97706" stroke-width=".6" stroke-dasharray="4 4" opacity=".3"/>
+<rect x="138" y="460" width="672" height="378" rx="5" fill="#fffbeb" stroke="#d97706" stroke-width="2.5" stroke-dasharray="7 3" filter="url(#agentGlow)"/>
+<rect x="138" y="460" width="672" height="20" rx="5" fill="#d97706" opacity=".1"/>
+<text class="section-label" x="153" y="475" fill="#d97706" font-size="9">AGENT ORCHESTRATION — LangGraph v2 · START → ingest → plan → extract ×N ↔ coverage → finalize → END</text>
 
 <line class="arr" x1="448" y1="442" x2="448" y2="458"/>
-<text class="label-sm" x="454" y="453">ranked chunks</text>
+<text class="label-sm" x="454" y="453">all chunks</text>
 
-<!-- Step 6 -->
-<circle cx="165" cy="512" r="13" fill="#ea580c"/><text class="step" x="165" y="512" font-size="10">6</text>
+<!-- FIX 4: Step 6 — INGEST NODE (was missing) -->
+<circle cx="165" cy="506" r="12" fill="#ea580c"/><text class="step" x="165" y="506">6</text>
 
-<!-- Document Analyst -->
-<g transform="translate(185,492)">
-  <rect x="0" y="0" width="210" height="56" rx="4" fill="#fff" stroke="#d97706" stroke-width="1.4" filter="url(#cardShadow)"/>
-  <circle cx="24" cy="24" r="16" fill="#2563eb"/>
-  <text font-size="11" font-weight="800" fill="#fff" x="24" y="28" text-anchor="middle">DA</text>
-  <text class="box-title" x="52" y="17">Document Analyst</text>
-  <text class="box-sub" x="52" y="30">Structure · Search plan · JSON</text>
-  <rect x="52" y="37" width="60" height="13" rx="3" fill="#dbeafe"/>
-  <text class="label-xs" fill="#2563eb" x="82" y="47" text-anchor="middle">tool-use loop</text>
-  <rect x="118" y="37" width="52" height="13" rx="3" fill="#fff7ed" stroke="#d97706" stroke-width=".5"/>
-  <text class="label-xs" fill="#d97706" x="144" y="47" text-anchor="middle">sequential</text>
+<g transform="translate(183,490)">
+  <rect x="0" y="0" width="200" height="42" rx="4" fill="#fff" stroke="#2563eb" stroke-width="1.4" filter="url(#cardShadow)"/>
+  <circle cx="18" cy="18" r="12" fill="#2563eb"/>
+  <text font-size="9" font-weight="800" fill="#fff" x="18" y="22" text-anchor="middle">IN</text>
+  <text class="box-title" x="40" y="15">ingest_node</text>
+  <text class="box-sub" x="40" y="28">Build HybridRetriever from chunks</text>
+  <text class="box-detail" x="40" y="38">BM25 index + Voyage embeddings</text>
+</g>
+
+<line class="arr" x1="385" y1="511" x2="420" y2="511"/>
+
+<!-- Step 7 — PLANNING AGENT -->
+<circle cx="433" cy="500" r="12" fill="#ea580c"/><text class="step" x="433" y="500">7</text>
+
+<g transform="translate(452,490)">
+  <rect x="0" y="0" width="342" height="42" rx="4" fill="#fff" stroke="#3b82f6" stroke-width="1.6" filter="url(#cardShadow)"/>
+  <circle cx="18" cy="18" r="12" fill="#3b82f6"/>
+  <text font-size="9" font-weight="800" fill="#fff" x="18" y="22" text-anchor="middle">PA</text>
+  <text class="box-title" x="40" y="15">planning_agent_node</text>
+  <text class="box-sub" x="40" y="28">read_overview · test_query · submit_plan</text>
+  <rect x="240" y="5" width="60" height="13" rx="3" fill="#dbeafe"/>
+  <text class="label-xs" fill="#2563eb" x="270" y="15" text-anchor="middle">tool-use loop</text>
+  <rect x="240" y="22" width="60" height="13" rx="3" fill="#fff7ed" stroke="#d97706" stroke-width=".5"/>
+  <text class="label-xs" fill="#d97706" x="270" y="32" text-anchor="middle">max 6 calls</text>
 </g>
 
 <!-- Fallback -->
-<g transform="translate(185,560)">
-  <rect x="0" y="0" width="150" height="34" rx="4" fill="#fff" stroke="#d97706" stroke-width="1" stroke-dasharray="4 2"/>
-  <text class="box-sub" x="75" y="14" text-anchor="middle" fill="#d97706">Fallback Search Plan</text>
-  <text class="box-detail" x="75" y="26" text-anchor="middle">5 standard topics if DA fails</text>
+<g transform="translate(452,540)">
+  <rect x="0" y="0" width="150" height="26" rx="4" fill="#fff" stroke="#d97706" stroke-width="1" stroke-dasharray="4 2"/>
+  <text class="box-sub" x="75" y="11" text-anchor="middle" fill="#d97706">Fallback Search Plan</text>
+  <text class="box-detail" x="75" y="22" text-anchor="middle">5 standard topics if PA fails</text>
 </g>
-<path d="M290,548 L260,558" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="4 2"/>
+<path d="M623,532 L590,538" fill="none" stroke="#d97706" stroke-width="1" stroke-dasharray="4 2"/>
 
-<!-- Arrow: DA → parallel -->
-<line class="arr" x1="397" y1="520" x2="430" y2="520"/>
+<!-- Arrow: PA → Parallel Extraction -->
+<path class="arr" d="M448,535 L448,580"/>
 
-<!-- PARALLEL container -->
-<rect x="434" y="488" width="308" height="120" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="5 3" filter="url(#cardShadow)"/>
-<rect x="434" y="488" width="308" height="17" rx="4" fill="#7c3aed" opacity=".06"/>
-<text font-size="7.5" font-weight="700" fill="#7c3aed" x="588" y="500" text-anchor="middle">PARALLEL — asyncio.gather() + Semaphore(6)</text>
+<!-- Step 8 — PARALLEL EXTRACTOR ×N -->
+<circle cx="165" cy="610" r="13" fill="#ea580c"/><text class="step" x="165" y="610" font-size="10">8</text>
 
-<!-- Query Expansion -->
-<g transform="translate(440,508)">
-  <rect x="0" y="0" width="145" height="17" rx="3" fill="#f5f3ff" stroke="#7c3aed" stroke-width=".8"/>
-  <text font-size="7.5" font-weight="600" fill="#7c3aed" x="72" y="12" text-anchor="middle">QUERY_VARIANTS: 1 → 3x queries</text>
-</g>
+<!-- PARALLEL EXTRACTION container -->
+<rect x="185" y="588" width="502" height="78" rx="4" fill="#fff" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5 3" filter="url(#cardShadow)"/>
+<rect x="185" y="588" width="502" height="17" rx="4" fill="#8b5cf6" opacity=".06"/>
+<text font-size="7.5" font-weight="700" fill="#8b5cf6" x="436" y="600" text-anchor="middle">PARALLEL — LangGraph Send() · N topics from plan</text>
 
-<!-- Step 7 -->
-<circle cx="452" cy="550" r="10" fill="#ea580c"/><text class="step" x="452" y="550" font-size="8">7</text>
-
-<!-- Zoning Researcher -->
-<g transform="translate(466,528)">
-  <rect x="0" y="0" width="88" height="72" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
-  <circle cx="16" cy="14" r="12" fill="#7c3aed"/>
-  <text font-size="8" font-weight="800" fill="#fff" x="16" y="17" text-anchor="middle">ZR</text>
-  <text class="box-title" x="34" y="12" font-size="9.5">Zoning</text>
-  <text class="box-title" x="34" y="23" font-size="9.5">Researcher</text>
-  <text class="box-sub" x="6" y="37">Height · FAR</text>
-  <text class="box-sub" x="6" y="47">Setbacks · Density</text>
-  <rect x="6" y="54" width="34" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="23" y="63" text-anchor="middle">search</text>
-  <rect x="44" y="54" width="36" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="62" y="63" text-anchor="middle">extract</text>
+<g transform="translate(195,608)">
+  <rect x="0" y="0" width="480" height="48" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <circle cx="18" cy="20" r="14" fill="#8b5cf6"/>
+  <text font-size="9" font-weight="800" fill="#fff" x="18" y="24" text-anchor="middle">EX</text>
+  <text class="box-title" x="42" y="14">extract_topic_node ×N</text>
+  <text class="box-sub" x="42" y="26">3 query variants → hybrid retrieve → Claude → structured JSON</text>
+  <rect x="42" y="32" width="50" height="11" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="67" y="41" text-anchor="middle">params</text>
+  <rect x="96" y="32" width="36" height="11" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="114" y="41" text-anchor="middle">uses</text>
+  <rect x="136" y="32" width="62" height="11" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="167" y="41" text-anchor="middle">restrictions</text>
+  <rect x="202" y="32" width="48" height="11" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="226" y="41" text-anchor="middle">x-refs</text>
+  <rect x="254" y="32" width="82" height="11" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="295" y="41" text-anchor="middle">build-to micro</text>
 </g>
 
-<!-- Use Analyst -->
-<g transform="translate(562,528)">
-  <rect x="0" y="0" width="88" height="72" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
-  <circle cx="16" cy="14" r="12" fill="#059669"/>
-  <text font-size="8" font-weight="800" fill="#fff" x="16" y="17" text-anchor="middle">UA</text>
-  <text class="box-title" x="34" y="12" font-size="9.5">Use</text>
-  <text class="box-title" x="34" y="23" font-size="9.5">Analyst</text>
-  <text class="box-sub" x="6" y="37">Permitted · Cond.</text>
-  <text class="box-sub" x="6" y="47">Prohibited · X-refs</text>
-  <rect x="6" y="54" width="34" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="23" y="63" text-anchor="middle">search</text>
-  <rect x="44" y="54" width="36" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="62" y="63" text-anchor="middle">extract</text>
+<!-- Extraction → Coverage -->
+<path class="arr" d="M436,666 L436,694"/>
+
+<!-- Step 9 — COVERAGE AGENT -->
+<circle cx="165" cy="722" r="13" fill="#ea580c"/><text class="step" x="165" y="722" font-size="10">9</text>
+
+<g transform="translate(185,700)">
+  <rect x="0" y="0" width="340" height="56" rx="4" fill="#fff" stroke="#ec4899" stroke-width="1.4" filter="url(#cardShadow)"/>
+  <circle cx="24" cy="24" r="16" fill="#ec4899"/>
+  <text font-size="11" font-weight="800" fill="#fff" x="24" y="28" text-anchor="middle">CA</text>
+  <text class="box-title" x="52" y="16">coverage_agent_node</text>
+  <text class="box-sub" x="52" y="28">count_extractions · test_retrieval · submit_decision</text>
+  <rect x="52" y="35" width="60" height="13" rx="3" fill="#dbeafe"/>
+  <text class="label-xs" fill="#2563eb" x="82" y="45" text-anchor="middle">tool-use loop</text>
+  <rect x="118" y="35" width="72" height="13" rx="3" fill="#fff7ed" stroke="#d97706" stroke-width=".5"/>
+  <text class="label-xs" fill="#d97706" x="154" y="45" text-anchor="middle">max 2 rounds</text>
+  <rect x="196" y="35" width="52" height="13" rx="3" fill="#fff7ed" stroke="#d97706" stroke-width=".5"/>
+  <text class="label-xs" fill="#d97706" x="222" y="45" text-anchor="middle">max 8 calls</text>
 </g>
 
-<!-- Risk Analyst -->
-<g transform="translate(658,528)">
-  <rect x="0" y="0" width="78" height="72" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
-  <circle cx="16" cy="14" r="12" fill="#ef4444"/>
-  <text font-size="8" font-weight="800" fill="#fff" x="16" y="17" text-anchor="middle">RA</text>
-  <text class="box-title" x="34" y="12" font-size="9.5">Risk</text>
-  <text class="box-title" x="34" y="23" font-size="9.5">Analyst</text>
-  <text class="box-sub" x="6" y="37">Restrictions</text>
-  <text class="box-sub" x="6" y="47">Overlays · DKs</text>
-  <rect x="6" y="54" width="34" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="23" y="63" text-anchor="middle">search</text>
-  <rect x="42" y="54" width="30" height="12" rx="3" fill="#fef3c7"/>
-  <text class="label-xs" fill="#92400e" x="57" y="63" text-anchor="middle">extract</text>
-</g>
+<!-- FIX 1: Gap-fill arrow from CA → EX (NOT to PA) -->
+<path d="M185,728 L152,728 L152,632 L183,632" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ahO)"/>
+<rect x="139" y="668" width="22" height="45" rx="3" fill="#fff7ed"/>
+<text font-size="7" font-weight="700" fill="#ea580c" x="150" y="694" text-anchor="middle" writing-mode="tb">gap-fill</text>
+<text class="label-sm" x="153" y="660" fill="#ea580c" font-size="6.5">CA → EX</text>
 
-<!-- parallel → CE -->
-<path class="arr" d="M588,608 L588,642"/>
+<!-- Coverage → Finalize -->
+<line class="arr" x1="527" y1="728" x2="560" y2="728"/>
 
-<!-- Step 8 -->
-<circle cx="165" cy="672" r="13" fill="#ea580c"/><text class="step" x="165" y="672" font-size="10">8</text>
+<!-- Step 10 — ASSEMBLER (finalize_node) — includes verification, dedup, DKs, summary -->
+<circle cx="574" cy="716" r="13" fill="#ea580c"/><text class="step" x="574" y="716" font-size="10">10</text>
 
-<!-- Coverage Evaluator -->
-<g transform="translate(185,652)">
-  <rect x="0" y="0" width="230" height="56" rx="4" fill="#fff" stroke="#ea580c" stroke-width="1.4" filter="url(#cardShadow)"/>
-  <circle cx="24" cy="24" r="16" fill="#ea580c"/>
-  <text font-size="11" font-weight="800" fill="#fff" x="24" y="28" text-anchor="middle">CE</text>
-  <text class="box-title" x="52" y="17">Coverage Evaluator</text>
-  <text class="box-sub" x="52" y="30">Gap detection · Max 2 rounds</text>
-  <rect x="52" y="37" width="58" height="13" rx="3" fill="#fff7ed" stroke="#ea580c" stroke-width=".5"/>
-  <text class="label-xs" fill="#ea580c" x="81" y="47" text-anchor="middle">gap-fill &#8635;</text>
-  <rect x="116" y="37" width="60" height="13" rx="3" fill="#dbeafe"/>
-  <text class="label-xs" fill="#2563eb" x="146" y="47" text-anchor="middle">tool-use loop</text>
-</g>
-
-<!-- Gap-fill loop -->
-<path d="M185,678 L152,678 L152,550 L185,550" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ahO)"/>
-<rect x="139" y="602" width="22" height="55" rx="3" fill="#fff7ed"/>
-<text font-size="7" font-weight="700" fill="#ea580c" x="150" y="634" text-anchor="middle" writing-mode="tb">gap-fill</text>
-
-<!-- CE → QC -->
-<line class="arr" x1="417" y1="680" x2="455" y2="680"/>
-
-<!-- Step 9 -->
-<circle cx="468" cy="668" r="13" fill="#ea580c"/><text class="step" x="468" y="668" font-size="10">9</text>
-
-<!-- Quality Checker -->
-<g transform="translate(488,652)">
-  <rect x="0" y="0" width="258" height="56" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <circle cx="24" cy="24" r="16" fill="#0d9488"/>
-  <text font-size="11" font-weight="800" fill="#fff" x="24" y="28" text-anchor="middle">QC</text>
-  <text class="box-title" x="52" y="17">Quality Checker</text>
-  <text class="box-sub" x="52" y="30">Dedup · Verify citations · Summarize</text>
-  <rect x="52" y="37" width="40" height="13" rx="3" fill="#ccfbf1"/>
-  <text class="label-xs" fill="#0d9488" x="72" y="47" text-anchor="middle">dedup</text>
-  <rect x="96" y="37" width="40" height="13" rx="3" fill="#ccfbf1"/>
-  <text class="label-xs" fill="#0d9488" x="116" y="47" text-anchor="middle">verify</text>
-  <rect x="140" y="37" width="54" height="13" rx="3" fill="#ccfbf1"/>
-  <text class="label-xs" fill="#0d9488" x="167" y="47" text-anchor="middle">summarize</text>
-  <rect x="198" y="37" width="50" height="13" rx="3" fill="#fef2f2"/>
-  <text class="label-xs" fill="#ef4444" x="223" y="47" text-anchor="middle">deal killers</text>
+<!-- FIX 2 & 5: Assembler now shows ALL finalize work (no separate verification section) -->
+<g transform="translate(594,690)">
+  <rect x="0" y="0" width="196" height="90" rx="4" fill="#fff" stroke="#10b981" stroke-width="1.6" filter="url(#cardShadow)"/>
+  <circle cx="18" cy="18" r="14" fill="#10b981"/>
+  <text font-size="10" font-weight="800" fill="#fff" x="18" y="22" text-anchor="middle">AS</text>
+  <text class="box-title" x="42" y="14">finalize_node</text>
+  <text class="box-sub" x="42" y="26">Build-to micro-pass</text>
+  <rect x="10" y="34" width="40" height="12" rx="3" fill="#d1fae5"/>
+  <text class="label-xs" fill="#059669" x="30" y="43" text-anchor="middle">dedup</text>
+  <rect x="54" y="34" width="60" height="12" rx="3" fill="#ccfbf1"/>
+  <text class="label-xs" fill="#0d9488" x="84" y="43" text-anchor="middle">3-tier verify</text>
+  <rect x="118" y="34" width="52" height="12" rx="3" fill="#fef2f2"/>
+  <text class="label-xs" fill="#ef4444" x="144" y="43" text-anchor="middle">deal killers</text>
+  <rect x="10" y="50" width="54" height="12" rx="3" fill="#dbeafe"/>
+  <text class="label-xs" fill="#2563eb" x="37" y="59" text-anchor="middle">summarize</text>
+  <rect x="68" y="50" width="66" height="12" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="101" y="59" text-anchor="middle">store memory</text>
+  <rect x="138" y="50" width="48" height="12" rx="3" fill="#d1fae5"/>
+  <text class="label-xs" fill="#059669" x="162" y="59" text-anchor="middle">persist</text>
+  <text class="box-detail" x="10" y="78">Citation: exact → fuzzy → semantic</text>
+  <text class="box-detail" x="10" y="87">AnalysisResult → .data/analyses/{id}/</text>
 </g>
 
 
-<!-- Page Images → Agent Orchestration (vision path) -->
-<path d="M705,225 L740,225 L740,520 L744,520" fill="none" stroke="#93c5fd" stroke-width="1.3" stroke-dasharray="5 3" marker-end="url(#ahB)"/>
-<text class="label-sm" x="746" y="370" fill="#2563eb" writing-mode="tb" text-anchor="middle">vision / multimodal</text>
+<!-- ═══════════════════════════════════════════════════
+     OUTPUT & DELIVERY — Green, straight from finalize
+     ═══════════════════════════════════════════════════ -->
+<rect x="138" y="858" width="672" height="222" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" filter="url(#sectionShadow)"/>
+<text class="section-label" x="153" y="874" fill="#059669">OUTPUT &amp; DELIVERY</text>
 
+<path d="M692,780 L692,856" fill="none" stroke="#059669" stroke-width="2.8" stroke-dasharray="10 5" marker-end="url(#ahGS)"/>
+<text font-size="8" font-weight="700" fill="#059669" x="698" y="820">results</text>
 
-<!-- ┌──────────────────────────────────────────────────┐ -->
-<!-- │  VERIFICATION — Teal solid                       │ -->
-<!-- └──────────────────────────────────────────────────┘ -->
-<rect x="138" y="818" width="620" height="90" rx="4" fill="#f0fdfa" stroke="#0d9488" stroke-width="1.5" filter="url(#sectionShadow)"/>
-<text class="section-label" x="153" y="834" fill="#0d9488">VERIFICATION</text>
+<circle cx="165" cy="900" r="12" fill="#ea580c"/><text class="step" x="165" y="900">11</text>
 
-<line class="arr" x1="448" y1="800" x2="448" y2="816"/>
-
-<!-- Step 10 -->
-<circle cx="165" cy="862" r="12" fill="#ea580c"/><text class="step" x="165" y="862">10</text>
-
-<!-- Citation Verifier -->
-<g transform="translate(183,842)">
-  <rect x="0" y="0" width="190" height="52" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <path d="M20,8 L20,22 Q20,32 32,36 Q44,32 44,22 L44,8 Z" fill="#ccfbf1" stroke="#0d9488" stroke-width="1"/>
-  <path d="M26,20 L30,26 L40,14" fill="none" stroke="#0d9488" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <text class="box-title" x="56" y="18">Citation Verifier</text>
-  <text class="box-sub" x="56" y="30">3-tier: exact → fuzzy → all pages</text>
-  <text class="box-detail" x="56" y="42">119ms · 100% accuracy</text>
+<!-- Dashboard -->
+<g transform="translate(183,882)">
+  <rect x="0" y="0" width="300" height="56" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="56" rx="2" fill="#059669"/>
+  <rect x="16" y="8" width="38" height="24" rx="3" fill="#d1fae5"/>
+  <rect x="20" y="14" width="8" height="14" rx="1" fill="#059669" opacity=".3"/>
+  <rect x="30" y="18" width="8" height="10" rx="1" fill="#059669" opacity=".5"/>
+  <rect x="40" y="11" width="8" height="17" rx="1" fill="#059669" opacity=".7"/>
+  <text class="box-title" x="64" y="18">Dashboard + Results</text>
+  <text class="box-sub" x="64" y="30">SSE streaming · 4 agent cards · Pipeline observability</text>
+  <text class="box-sub" x="64" y="42">District cards · Citation panel · Export dropdown</text>
 </g>
 
-<!-- Dedup & Merge -->
-<g transform="translate(390,842)">
-  <rect x="0" y="0" width="170" height="52" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <path d="M18,12 L28,22 L18,32" fill="none" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round"/>
-  <path d="M38,12 L28,22 L38,32" fill="none" stroke="#0d9488" stroke-width="1.8" stroke-linecap="round"/>
-  <text class="box-title" x="50" y="18">Dedup &amp; Merge</text>
-  <text class="box-sub" x="50" y="30">District-aware · Name norm.</text>
-  <text class="box-detail" x="50" y="42">Keep higher confidence</text>
+<!-- Persistence -->
+<g transform="translate(500,882)">
+  <rect x="0" y="0" width="296" height="56" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="56" rx="2" fill="#d97706"/>
+  <ellipse cx="28" cy="14" rx="12" ry="4" fill="#fef3c7" stroke="#d97706" stroke-width=".8"/>
+  <path d="M16,14 L16,22 Q28,28 40,22 L40,14" fill="#fef3c7" stroke="#d97706" stroke-width=".8"/>
+  <text class="box-title" x="52" y="18">Persistence</text>
+  <text class="box-sub" x="52" y="30">.data/analyses/{id}/result.json</text>
+  <text class="box-sub" x="52" y="42">File-based JSON · No database</text>
 </g>
 
-<!-- Deal Killers -->
-<g transform="translate(576,842)">
-  <rect x="0" y="0" width="170" height="52" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <path d="M22,30 L32,10 L42,30Z" fill="#fef2f2" stroke="#ef4444" stroke-width="1.2"/>
-  <text font-size="10" font-weight="800" fill="#ef4444" x="32" y="28" text-anchor="middle">!</text>
-  <text class="box-title" x="54" y="14">Deal Killers</text>
-  <rect x="54" y="20" width="30" height="11" rx="2" fill="#fef2f2"/>
-  <text font-size="6.5" font-weight="700" fill="#ef4444" x="69" y="29" text-anchor="middle">RED</text>
-  <rect x="88" y="20" width="40" height="11" rx="2" fill="#fffbeb"/>
-  <text font-size="6.5" font-weight="700" fill="#d97706" x="108" y="29" text-anchor="middle">YELLOW</text>
-  <text class="box-detail" x="54" y="44">CEQA · Historic · Coastal</text>
+<!-- Export Row -->
+<g transform="translate(183,952)">
+  <rect x="0" y="0" width="142" height="46" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="46" rx="2" fill="#0d9488"/>
+  <rect x="16" y="6" width="32" height="18" rx="2" fill="#ccfbf1"/>
+  <line x1="16" y1="14" x2="48" y2="14" stroke="#0d9488" stroke-width=".6"/>
+  <line x1="28" y1="6" x2="28" y2="24" stroke="#0d9488" stroke-width=".6"/>
+  <text class="box-title" x="16" y="34">Excel Export</text>
+  <text class="box-sub" x="16" y="43">.xlsx · openpyxl</text>
+</g>
+
+<g transform="translate(340,952)">
+  <rect x="0" y="0" width="142" height="46" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="46" rx="2" fill="#2563eb"/>
+  <text class="box-title" x="16" y="16">HTML Report</text>
+  <text class="box-sub" x="16" y="28">Jinja2 · Table-based</text>
+  <text class="box-detail" x="16" y="40">Email-compatible layout</text>
+</g>
+
+<g transform="translate(498,952)">
+  <rect x="0" y="0" width="142" height="46" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="46" rx="2" fill="#dc2626"/>
+  <text class="box-title" x="16" y="16">PDF Report</text>
+  <text class="box-sub" x="16" y="28">WeasyPrint · A4</text>
+  <text class="box-detail" x="16" y="40">Page numbers · Print CSS</text>
+</g>
+
+<g transform="translate(656,952)">
+  <rect x="0" y="0" width="142" height="46" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="46" rx="2" fill="#d97706"/>
+  <text class="box-title" x="16" y="16">Email Report</text>
+  <text class="box-sub" x="16" y="28">Gmail SMTP · Port 587</text>
+  <text class="box-detail" x="16" y="40">HTML body + PDF attach</text>
+</g>
+
+<!-- Performance row -->
+<g transform="translate(183,1012)">
+  <rect x="0" y="0" width="615" height="52" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="615" height="16" rx="4" fill="#374151" opacity=".04"/>
+  <text font-size="7.5" font-weight="700" fill="#374151" x="14" y="12" letter-spacing=".4">PERFORMANCE</text>
+  <rect x="14" y="24" width="52" height="14" rx="3" fill="#dbeafe"/>
+  <text font-size="6.5" font-weight="700" fill="#2563eb" x="40" y="34" text-anchor="middle">80+ params</text>
+  <rect x="72" y="24" width="48" height="14" rx="3" fill="#d1fae5"/>
+  <text font-size="6.5" font-weight="700" fill="#059669" x="96" y="34" text-anchor="middle">~76s</text>
+  <rect x="126" y="24" width="52" height="14" rx="3" fill="#fef3c7"/>
+  <text font-size="6.5" font-weight="700" fill="#d97706" x="152" y="34" text-anchor="middle">~$0.50</text>
+  <rect x="184" y="24" width="62" height="14" rx="3" fill="#f5f3ff"/>
+  <text font-size="6.5" font-weight="700" fill="#7c3aed" x="215" y="34" text-anchor="middle">6 districts</text>
+  <rect x="252" y="24" width="68" height="14" rx="3" fill="#ccfbf1"/>
+  <text font-size="6.5" font-weight="700" fill="#0d9488" x="286" y="34" text-anchor="middle">100% cited</text>
+  <rect x="326" y="24" width="62" height="14" rx="3" fill="#fef2f2"/>
+  <text font-size="6.5" font-weight="700" fill="#ef4444" x="357" y="34" text-anchor="middle">deal killers</text>
+  <rect x="394" y="24" width="86" height="14" rx="3" fill="#eef2ff"/>
+  <text font-size="6.5" font-weight="700" fill="#6366f1" x="437" y="34" text-anchor="middle">3-tier verification</text>
 </g>
 
 
-<!-- ════════════════════════════════════════════════════════════
-     BOLD ARROW: Verification → Output
-     ════════════════════════════════════════════════════════════ -->
-<!-- Arrow goes STRAIGHT RIGHT at y=868 into extended Output section -->
-<path d="M760,868 L818,868" fill="none" stroke="#059669" stroke-width="2.8" marker-end="url(#ahGS)"/>
-<text font-size="8" font-weight="700" fill="#059669" x="789" y="862">results</text>
+<!-- ═══════════════════════════════════════════════════════════
+     FIX 3: AGENTIC FEATURES — SEPARATE from pipeline
+     These are NOT in the main pipeline flow. Shown as
+     independent features to the side / below.
+     ═══════════════════════════════════════════════════════════ -->
+<rect x="138" y="1086" width="672" height="240" rx="5" fill="#eef2ff" stroke="#6366f1" stroke-width="2" stroke-dasharray="7 3" filter="url(#agenticGlow)"/>
+<rect x="138" y="1086" width="672" height="20" rx="5" fill="#6366f1" opacity=".08"/>
+<text class="section-label" x="153" y="1101" fill="#6366f1" font-size="9">AGENTIC FEATURES — Independent from main pipeline · Triggered by separate API endpoints</text>
+
+<!-- Task Planning Agent -->
+<g transform="translate(155,1116)">
+  <rect x="0" y="0" width="316" height="80" rx="4" fill="#fff" stroke="#6366f1" stroke-width="1.6" filter="url(#cardShadow)"/>
+  <circle cx="22" cy="34" r="16" fill="#6366f1"/>
+  <text font-size="10" font-weight="800" fill="#fff" x="22" y="38" text-anchor="middle">TP</text>
+  <text class="box-title" x="48" y="14">Task Planning Agent</text>
+  <text class="box-sub" x="48" y="26">POST /api/analysis/{id}/plan · Claude Sonnet 4</text>
+  <text class="box-sub" x="48" y="38">9 tools · Max 15 calls · SSE streaming</text>
+  <text class="box-sub" x="48" y="50">create_plan → lookup → calculate → search → compare</text>
+  <rect x="48" y="58" width="64" height="13" rx="3" fill="#eef2ff"/>
+  <text class="label-xs" fill="#6366f1" x="80" y="68" text-anchor="middle">autonomous</text>
+  <rect x="118" y="58" width="70" height="13" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="153" y="68" text-anchor="middle">submit_result</text>
+  <rect x="194" y="58" width="54" height="13" rx="3" fill="#d1fae5"/>
+  <text class="label-xs" fill="#059669" x="221" y="68" text-anchor="middle">post-analysis</text>
+</g>
+
+<!-- Human-in-the-Loop -->
+<g transform="translate(487,1116)">
+  <rect x="0" y="0" width="310" height="80" rx="4" fill="#fff" stroke="#0d9488" stroke-width="1.4" filter="url(#cardShadow)"/>
+  <circle cx="22" cy="34" r="16" fill="#0d9488"/>
+  <text font-size="12" font-weight="800" fill="#fff" x="22" y="38" text-anchor="middle">?</text>
+  <text class="box-title" x="48" y="14">Human-in-the-Loop</text>
+  <text class="box-sub" x="48" y="26">ask_user tool inside Task Planner</text>
+  <text class="box-sub" x="48" y="38">2-phase: pause → user answers → re-run</text>
+  <text class="box-sub" x="48" y="50">Ambiguity · Conflicting values · Bonuses</text>
+  <rect x="48" y="58" width="62" height="13" rx="3" fill="#ccfbf1"/>
+  <text class="label-xs" fill="#0d9488" x="79" y="68" text-anchor="middle">prior_answers</text>
+  <rect x="116" y="58" width="72" height="13" rx="3" fill="#ccfbf1"/>
+  <text class="label-xs" fill="#0d9488" x="152" y="68" text-anchor="middle">pending_question</text>
+  <rect x="194" y="58" width="56" height="13" rx="3" fill="#fef2f2"/>
+  <text class="label-xs" fill="#ef4444" x="222" y="68" text-anchor="middle">pause/resume</text>
+</g>
+
+<!-- HITL arrow -->
+<path d="M473,1156 L485,1156" fill="none" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ahT)"/>
+
+<!-- Memory Layer -->
+<g transform="translate(155,1210)">
+  <rect x="0" y="0" width="316" height="70" rx="4" fill="#fff" stroke="#d97706" stroke-width="1.4" filter="url(#cardShadow)"/>
+  <circle cx="22" cy="30" r="16" fill="#d97706"/>
+  <text font-size="14" font-weight="800" fill="#fff" x="22" y="34" text-anchor="middle">M</text>
+  <text class="box-title" x="48" y="14">Memory Layer</text>
+  <text class="box-sub" x="48" y="26">GET /api/memory/summary · .data/agent_memory.json</text>
+  <text class="box-sub" x="48" y="38">Jurisdiction patterns · Known issues</text>
+  <rect x="48" y="46" width="72" height="13" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="84" y="56" text-anchor="middle">store (finalize)</text>
+  <rect x="126" y="46" width="78" height="13" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="165" y="56" text-anchor="middle">recall (TP start)</text>
+  <rect x="210" y="46" width="64" height="13" rx="3" fill="#d1fae5"/>
+  <text class="label-xs" fill="#059669" x="242" y="56" text-anchor="middle">$0 (local JSON)</text>
+</g>
+
+<!-- MCP Server -->
+<g transform="translate(487,1210)">
+  <rect x="0" y="0" width="310" height="70" rx="4" fill="#fff" stroke="#7c3aed" stroke-width="1.6" filter="url(#cardShadow)"/>
+  <rect x="0" y="0" width="5" height="70" rx="2" fill="#7c3aed"/>
+  <circle cx="26" cy="30" r="16" fill="#7c3aed"/>
+  <text font-size="9" font-weight="800" fill="#fff" x="26" y="34" text-anchor="middle">MCP</text>
+  <text class="box-title" x="52" y="14">MCP Server — 8 Tools</text>
+  <text class="box-sub" x="52" y="26">mcp_server.py · Separate process · stdio transport</text>
+  <text class="box-sub" x="52" y="38">list · summary · params · uses · restrictions</text>
+  <rect x="52" y="46" width="82" height="13" rx="3" fill="#f5f3ff"/>
+  <text class="label-xs" fill="#7c3aed" x="93" y="56" text-anchor="middle">check_feasibility</text>
+  <rect x="140" y="46" width="60" height="13" rx="3" fill="#f5f3ff"/>
+  <text class="label-xs" fill="#7c3aed" x="170" y="56" text-anchor="middle">compare</text>
+  <rect x="206" y="46" width="66" height="13" rx="3" fill="#f5f3ff"/>
+  <text class="label-xs" fill="#7c3aed" x="239" y="56" text-anchor="middle">send_report</text>
+</g>
+
+<!-- "NOT in pipeline" annotation -->
+<g transform="translate(155,1292)">
+  <rect x="0" y="0" width="642" height="24" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width=".6"/>
+  <text font-size="8" font-weight="600" fill="#6366f1" x="321" y="16" text-anchor="middle">These features use analysis results but are NOT part of the extraction pipeline · Triggered independently by users or external clients</text>
+</g>
+
+<!-- Dashed arrows showing data flow from pipeline to agentic features -->
+<path d="M448,1064 L448,1084" fill="none" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#ahI)"/>
+<text class="label-sm" x="454" y="1076" fill="#6366f1">uses analysis data</text>
 
 
-<!-- ════════════════════════════════════════════════════════════
-     EXTERNAL APIS — Green dashed (right side)
-     ════════════════════════════════════════════════════════════ -->
-<rect x="820" y="90" width="420" height="310" rx="5" fill="#f0fdf4" stroke="#059669" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
-<text class="section-label" x="836" y="108" fill="#059669">EXTERNAL APIS</text>
+<!-- ════════════════════════════════════════════════
+     EXTERNAL APIS — Right side
+     ════════════════════════════════════════════════ -->
+<rect x="870" y="90" width="510" height="320" rx="5" fill="#f0fdf4" stroke="#059669" stroke-width="1.5" stroke-dasharray="6 3" filter="url(#sectionShadow)"/>
+<text class="section-label" x="886" y="108" fill="#059669">EXTERNAL APIS</text>
 
 <!-- Anthropic API -->
-<g transform="translate(836,118)">
-  <rect x="0" y="0" width="388" height="100" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <!-- Colored left strip -->
+<g transform="translate(886,118)">
+  <rect x="0" y="0" width="478" height="100" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
   <rect x="0" y="0" width="5" height="100" rx="2" fill="#d97706"/>
   <rect x="16" y="12" width="46" height="36" rx="4" fill="#1a1a2e"/>
   <text font-size="14" font-weight="800" fill="#d4a574" x="39" y="36" text-anchor="middle">A</text>
   <text class="box-title" x="74" y="24">Anthropic API</text>
-  <text font-size="10" font-weight="600" fill="#7c3aed" x="74" y="38">Claude Sonnet 4</text>
-  <text class="box-sub" x="16" y="62">DA: 2 calls · Extraction: ~16 · CE: 2 · QC: 2</text>
-  <text class="box-sub" x="16" y="76">~20 Claude calls per document</text>
-  <rect x="16" y="82" width="64" height="13" rx="3" fill="#fef2f2"/>
-  <text class="label-xs" fill="#ef4444" x="48" y="92" text-anchor="middle">$2.05 / doc</text>
+  <text font-size="10" font-weight="600" fill="#7c3aed" x="74" y="38">Claude Sonnet 4 (claude-sonnet-4-20250514)</text>
+  <text class="box-sub" x="16" y="62">PA: 6 calls · Extraction: ~16 · CA: 8 · Summary: 1</text>
+  <text class="box-sub" x="16" y="76">Task Planner: up to 15 calls per question</text>
+  <rect x="16" y="82" width="70" height="13" rx="3" fill="#fef2f2"/>
+  <text class="label-xs" fill="#ef4444" x="51" y="92" text-anchor="middle">~$0.50 / doc</text>
+  <rect x="92" y="82" width="100" height="13" rx="3" fill="#fef3c7"/>
+  <text class="label-xs" fill="#92400e" x="142" y="92" text-anchor="middle">~$0.10 / TP query</text>
 </g>
 
 <!-- Voyage AI -->
-<g transform="translate(836,232)">
-  <rect x="0" y="0" width="388" height="100" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <!-- Colored left strip -->
+<g transform="translate(886,232)">
+  <rect x="0" y="0" width="478" height="100" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
   <rect x="0" y="0" width="5" height="100" rx="2" fill="#7c3aed"/>
   <rect x="16" y="12" width="46" height="36" rx="4" fill="#1e1b4b"/>
   <text font-size="11" font-weight="800" fill="#a78bfa" x="39" y="35" text-anchor="middle">V</text>
   <text class="box-title" x="74" y="24">Voyage AI</text>
-  <text font-size="9" font-weight="600" fill="#7c3aed" x="74" y="38">voyage-3-large + rerank-2</text>
-  <text class="box-sub" x="16" y="62">Embeddings: ~90 calls (1024-dim vectors)</text>
-  <text class="box-sub" x="16" y="76">Reranking: ~90 calls (cross-encoder)</text>
+  <text font-size="9" font-weight="600" fill="#7c3aed" x="74" y="38">voyage-3-large (1024-dim) + rerank-2</text>
+  <text class="box-sub" x="16" y="62">Embeddings: built at ingest_node · dense 1024-dim vectors</text>
+  <text class="box-sub" x="16" y="76">Reranking: cross-encoder on RRF-fused results</text>
   <rect x="16" y="82" width="74" height="13" rx="3" fill="#f5f3ff"/>
-  <text class="label-xs" fill="#7c3aed" x="53" y="92" text-anchor="middle">~180 API calls</text>
+  <text class="label-xs" fill="#7c3aed" x="53" y="92" text-anchor="middle">hybrid retrieval</text>
 </g>
 
-<!-- Bidirectional arrows — clean parallel -->
-<line x1="774" y1="165" x2="834" y2="165" fill="none" stroke="#d97706" stroke-width="1.5" marker-end="url(#ahO)"/>
-<text class="label-sm" x="804" y="159" text-anchor="middle" fill="#d97706">prompts</text>
-<line x1="834" y1="182" x2="774" y2="182" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ah)"/>
-<text class="label-sm" x="804" y="196" text-anchor="middle">responses</text>
+<!-- Bidirectional arrows -->
+<line x1="824" y1="165" x2="884" y2="165" fill="none" stroke="#d97706" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#ahO)"/>
+<text class="label-sm" x="854" y="159" text-anchor="middle" fill="#d97706">prompts</text>
+<line x1="884" y1="182" x2="824" y2="182" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ah)"/>
+<text class="label-sm" x="854" y="196" text-anchor="middle">responses</text>
 
-<line x1="774" y1="290" x2="834" y2="290" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#ahP)"/>
-<text class="label-sm" x="804" y="284" text-anchor="middle" fill="#7c3aed">queries</text>
-<line x1="834" y1="307" x2="774" y2="307" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ah)"/>
-<text class="label-sm" x="804" y="321" text-anchor="middle">vectors</text>
+<line x1="824" y1="290" x2="884" y2="290" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#ahP)"/>
+<text class="label-sm" x="854" y="284" text-anchor="middle" fill="#7c3aed">queries</text>
+<line x1="884" y1="307" x2="824" y2="307" fill="none" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 2" marker-end="url(#ah)"/>
+<text class="label-sm" x="854" y="321" text-anchor="middle">vectors</text>
 
 
-<!-- ════════════════════════════════════════════════════════════
-     OUTPUT & DELIVERY — Green solid, with colored card strips
-     ════════════════════════════════════════════════════════════ -->
-<rect x="820" y="420" width="420" height="500" rx="5" fill="#ecfdf5" stroke="#059669" stroke-width="1.5" filter="url(#sectionShadow)"/>
-<text class="section-label" x="836" y="438" fill="#059669">OUTPUT &amp; DELIVERY</text>
-
-<!-- Step 11 -->
-<circle cx="848" cy="464" r="12" fill="#ea580c"/><text class="step" x="848" y="464">11</text>
-
-<!-- Dashboard — green strip -->
-<g transform="translate(866,448)">
-  <rect x="0" y="0" width="358" height="68" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="5" height="68" rx="2" fill="#059669"/>
-  <rect x="16" y="10" width="38" height="24" rx="3" fill="#d1fae5"/>
-  <rect x="20" y="16" width="8" height="14" rx="1" fill="#059669" opacity=".3"/>
-  <rect x="30" y="20" width="8" height="10" rx="1" fill="#059669" opacity=".5"/>
-  <rect x="40" y="13" width="8" height="17" rx="1" fill="#059669" opacity=".7"/>
-  <text class="box-title" x="64" y="20">Dashboard</text>
-  <text class="box-sub" x="64" y="32">SSE real-time progress · Agent timeline</text>
-  <text class="box-sub" x="16" y="48">GET /api/analysis/{id}/stream</text>
-  <text class="box-detail" x="16" y="60">EventSource · 500ms intervals · 6-agent status</text>
+<!-- ════════════════════════════════════════════════
+     MCP CLIENT — Right side
+     ════════════════════════════════════════════════ -->
+<g transform="translate(870,440)">
+  <rect x="0" y="0" width="510" height="90" rx="5" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5" filter="url(#sectionShadow)"/>
+  <text class="section-label" x="16" y="18" fill="#7c3aed">MCP CLIENT</text>
+  <rect x="16" y="28" width="480" height="50" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="16" y="28" width="5" height="50" rx="2" fill="#7c3aed"/>
+  <rect x="32" y="32" width="50" height="30" rx="6" fill="#1a1a2e"/>
+  <text font-size="8" font-weight="800" fill="#a78bfa" x="57" y="43" text-anchor="middle">Claude</text>
+  <text font-size="7" font-weight="600" fill="#6b7280" x="57" y="54" text-anchor="middle">Desktop</text>
+  <text class="box-title" x="92" y="46">Claude Desktop / Any MCP Client</text>
+  <text class="box-sub" x="92" y="60">Connects via stdio to mcp_server.py · 8 tools · Reads analysis results from disk</text>
 </g>
 
-<!-- Chat Q&A — blue strip -->
-<g transform="translate(866,526)">
-  <rect x="0" y="0" width="358" height="68" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="5" height="68" rx="2" fill="#2563eb"/>
-  <rect x="16" y="10" width="38" height="22" rx="11" fill="#dbeafe"/>
-  <circle cx="28" cy="21" r="2.5" fill="#2563eb" opacity=".5"/>
-  <circle cx="35" cy="21" r="2.5" fill="#2563eb" opacity=".5"/>
-  <circle cx="42" cy="21" r="2.5" fill="#2563eb" opacity=".5"/>
-  <text class="box-title" x="64" y="20">Chat Q&amp;A</text>
-  <text class="box-sub" x="64" y="32">RAG + Vision · Streaming answers</text>
-  <text class="box-sub" x="16" y="48">POST /api/analysis/{id}/chat</text>
-  <text class="box-detail" x="16" y="60">Full context in system prompt · Last 10 messages</text>
-</g>
+<!-- MCP arrow to backend -->
+<path d="M868,485 L852,485 L852,1245 L798,1245" fill="none" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#ahP)"/>
+<text class="label-sm" x="860" y="800" fill="#7c3aed" writing-mode="tb" text-anchor="middle">stdio · JSON-RPC</text>
 
-<!-- Excel Export — teal strip -->
-<g transform="translate(866,606)">
-  <rect x="0" y="0" width="170" height="56" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="5" height="56" rx="2" fill="#0d9488"/>
-  <rect x="16" y="8" width="32" height="22" rx="2" fill="#ccfbf1"/>
-  <line x1="16" y1="16" x2="48" y2="16" stroke="#0d9488" stroke-width=".6"/>
-  <line x1="16" y1="22" x2="48" y2="22" stroke="#0d9488" stroke-width=".6"/>
-  <line x1="28" y1="8" x2="28" y2="30" stroke="#0d9488" stroke-width=".6"/>
-  <line x1="40" y1="8" x2="40" y2="30" stroke="#0d9488" stroke-width=".6"/>
-  <text class="box-title" x="16" y="42">Excel Export</text>
-  <text class="box-sub" x="16" y="52">.xlsx · openpyxl</text>
-</g>
 
-<!-- Persistence — amber strip -->
-<g transform="translate(1054,606)">
-  <rect x="0" y="0" width="170" height="56" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="5" height="56" rx="2" fill="#d97706"/>
-  <ellipse cx="32" cy="14" rx="14" ry="5" fill="#fef3c7" stroke="#d97706" stroke-width=".8"/>
-  <path d="M18,14 L18,24 Q32,32 46,24 L46,14" fill="#fef3c7" stroke="#d97706" stroke-width=".8"/>
-  <text class="box-title" x="16" y="42">Persistence</text>
-  <text class="box-sub" x="16" y="52">.data/analyses/{id}/</text>
-</g>
-
-<!-- Performance metrics -->
-<g transform="translate(866,676)">
-  <rect x="0" y="0" width="358" height="80" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="358" height="18" rx="4" fill="#374151" opacity=".04"/>
-  <text font-size="8" font-weight="700" fill="#374151" x="16" y="13" letter-spacing=".5">MEASURED RESULTS (39-page PDF)</text>
-
-  <rect x="16" y="24" width="62" height="17" rx="3" fill="#dbeafe"/>
-  <text font-size="7" font-weight="700" fill="#2563eb" x="47" y="36" text-anchor="middle">82 Params</text>
-  <rect x="84" y="24" width="66" height="17" rx="3" fill="#ccfbf1"/>
-  <text font-size="7" font-weight="700" fill="#0d9488" x="117" y="36" text-anchor="middle">100% Cited</text>
-  <rect x="156" y="24" width="62" height="17" rx="3" fill="#f5f3ff"/>
-  <text font-size="7" font-weight="700" fill="#7c3aed" x="187" y="36" text-anchor="middle">6 Districts</text>
-  <rect x="224" y="24" width="60" height="17" rx="3" fill="#fffbeb"/>
-  <text font-size="7" font-weight="700" fill="#d97706" x="254" y="36" text-anchor="middle">148 X-Refs</text>
-  <rect x="290" y="24" width="48" height="17" rx="3" fill="#fef2f2"/>
-  <text font-size="7" font-weight="700" fill="#ef4444" x="314" y="36" text-anchor="middle">2 DKs</text>
-
-  <text class="box-detail" x="16" y="56">Index 6ms</text>
-  <rect x="62" y="50" width="4" height="8" rx="1" fill="#2563eb" opacity=".5"/>
-  <text class="box-detail" x="80" y="56">Retrieval 15s</text>
-  <rect x="138" y="50" width="20" height="8" rx="1" fill="#7c3aed" opacity=".5"/>
-  <text class="box-detail" x="168" y="56">Extraction 197s</text>
-  <rect x="244" y="50" width="70" height="8" rx="1" fill="#d97706" opacity=".5"/>
-
-  <text class="box-detail" x="16" y="72">Verify 119ms</text>
-  <rect x="72" y="66" width="4" height="8" rx="1" fill="#0d9488" opacity=".5"/>
-  <text class="box-detail" x="90" y="72">Summary ~8s</text>
-  <rect x="150" y="66" width="10" height="8" rx="1" fill="#059669" opacity=".5"/>
-  <text class="box-detail" x="174" y="72" fill="#374151" font-weight="700">Total: 213s · $2.05</text>
-</g>
-
-<!-- Verified intake badge at arrow entry point -->
-<g transform="translate(830,840)">
-  <rect x="0" y="0" width="400" height="60" rx="4" fill="#fff" stroke="#059669" stroke-width="1.2" filter="url(#cardShadow)"/>
-  <rect x="0" y="0" width="5" height="60" rx="2" fill="#059669"/>
-  <path d="M24,10 L24,28 Q24,40 38,44 Q52,40 52,28 L52,10 Z" fill="#ccfbf1" stroke="#059669" stroke-width="1"/>
-  <path d="M32,24 L36,30 L48,16" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <text class="box-title" x="64" y="20">Verified Pipeline Output</text>
-  <text class="box-sub" x="64" y="34">82 parameters · 100% cited · 6 districts · 148 cross-refs</text>
-  <text class="box-detail" x="64" y="48">All extractions verified → ready for delivery</text>
+<!-- ════════════════════════════════════════════════
+     GMAIL — Right side
+     ════════════════════════════════════════════════ -->
+<g transform="translate(870,550)">
+  <rect x="0" y="0" width="510" height="60" rx="5" fill="#fef2f2" stroke="#dc2626" stroke-width="1.2" filter="url(#sectionShadow)"/>
+  <text class="section-label" x="16" y="18" fill="#dc2626">EMAIL DELIVERY</text>
+  <rect x="16" y="26" width="480" height="26" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width="1" filter="url(#cardShadow)"/>
+  <rect x="16" y="26" width="5" height="26" rx="2" fill="#dc2626"/>
+  <text class="box-title" x="32" y="42">Gmail SMTP</text>
+  <text class="box-sub" x="120" y="42">STARTTLS · Port 587 · App password · smtplib (stdlib, zero deps)</text>
 </g>
 
 
-<!-- ════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════
+     RESUME BLOCK — Right side
+     ════════════════════════════════════════════════ -->
+<g transform="translate(870,640)">
+  <rect x="0" y="0" width="510" height="316" rx="5" fill="#fff" stroke="#111827" stroke-width="1.5" filter="url(#sectionShadow)"/>
+  <rect x="0" y="0" width="510" height="30" rx="5" fill="#111827"/>
+  <text font-size="11" font-weight="800" fill="#dc2626" x="16" y="21">ZoneAI</text>
+  <text font-size="11" font-weight="700" fill="#fff" x="78" y="21">— How It Works</text>
+
+  <text font-size="8" font-weight="600" fill="#9ca3af" x="16" y="50">END-TO-END FLOW</text>
+
+  <!-- Step flow -->
+  <circle cx="28" cy="68" r="8" fill="#ea580c"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="71" text-anchor="middle">1</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="71">Upload PDF → parse pages, detect sections, render images</text>
+
+  <circle cx="28" cy="92" r="8" fill="#7c3aed"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="95" text-anchor="middle">2</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="95">Chunk (parent/child/summary) → BM25 + Voyage embeddings</text>
+
+  <circle cx="28" cy="116" r="8" fill="#3b82f6"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="119" text-anchor="middle">3</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="119">Planning Agent reads document → creates extraction plan</text>
+
+  <circle cx="28" cy="140" r="8" fill="#8b5cf6"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="143" text-anchor="middle">4</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="143">Parallel Extractors (N topics) → retrieve → Claude → JSON</text>
+
+  <circle cx="28" cy="164" r="8" fill="#ec4899"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="167" text-anchor="middle">5</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="167">Coverage Agent checks gaps → re-extract if needed (max 2)</text>
+
+  <circle cx="28" cy="188" r="8" fill="#10b981"/>
+  <text font-size="7" font-weight="800" fill="#fff" x="28" y="191" text-anchor="middle">6</text>
+  <text font-size="8.5" font-weight="600" fill="#111827" x="42" y="191">Assembler: dedup → 3-tier verify → deal killers → persist</text>
+
+  <!-- Separator -->
+  <line x1="16" y1="210" x2="494" y2="210" stroke="#e5e7eb" stroke-width="1"/>
+  <text font-size="8" font-weight="600" fill="#9ca3af" x="16" y="228">AGENTIC FEATURES (post-analysis)</text>
+
+  <text font-size="8.5" font-weight="500" fill="#6b7280" x="16" y="248">Task Planner — 9 tools, autonomous zoning compliance checks</text>
+  <text font-size="8.5" font-weight="500" fill="#6b7280" x="16" y="264">MCP Server — 8 tools, Claude Desktop / AI-native integrations</text>
+  <text font-size="8.5" font-weight="500" fill="#6b7280" x="16" y="280">Memory — Cross-document learning, jurisdiction patterns</text>
+
+  <rect x="16" y="292" width="52" height="14" rx="3" fill="#dbeafe"/>
+  <text font-size="7" font-weight="700" fill="#2563eb" x="42" y="302" text-anchor="middle">80+ params</text>
+  <rect x="74" y="292" width="40" height="14" rx="3" fill="#d1fae5"/>
+  <text font-size="7" font-weight="700" fill="#059669" x="94" y="302" text-anchor="middle">~76s</text>
+  <rect x="120" y="292" width="46" height="14" rx="3" fill="#fef3c7"/>
+  <text font-size="7" font-weight="700" fill="#d97706" x="143" y="302" text-anchor="middle">~$0.50</text>
+  <rect x="172" y="292" width="68" height="14" rx="3" fill="#ccfbf1"/>
+  <text font-size="7" font-weight="700" fill="#0d9488" x="206" y="302" text-anchor="middle">100% cited</text>
+</g>
+
+
+<!-- ════════════════════════════════════════════════
+     TECH STACK — Right side bottom
+     ════════════════════════════════════════════════ -->
+<g transform="translate(870,970)">
+  <rect x="0" y="0" width="510" height="195" rx="5" fill="#fafaf9" stroke="#9ca3af" stroke-width="1" filter="url(#sectionShadow)"/>
+  <rect x="0" y="0" width="510" height="20" rx="5" fill="#374151" opacity=".04"/>
+  <text font-size="8" font-weight="700" fill="#374151" x="16" y="14" letter-spacing=".8">TECH STACK</text>
+
+  <rect x="16" y="28" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="71" y="44" text-anchor="middle">LangGraph</text>
+  <rect x="134" y="28" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="189" y="44" text-anchor="middle">Claude Sonnet 4</text>
+  <rect x="252" y="28" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="307" y="44" text-anchor="middle">FastAPI</text>
+  <rect x="370" y="28" width="130" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="435" y="44" text-anchor="middle">Next.js 14</text>
+
+  <rect x="16" y="60" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="71" y="76" text-anchor="middle">Voyage-3-large</text>
+  <rect x="134" y="60" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="189" y="76" text-anchor="middle">Voyage rerank-2</text>
+  <rect x="252" y="60" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="307" y="76" text-anchor="middle">BM25</text>
+  <rect x="370" y="60" width="130" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="435" y="76" text-anchor="middle">MCP SDK</text>
+
+  <rect x="16" y="92" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="71" y="108" text-anchor="middle">PyMuPDF</text>
+  <rect x="134" y="92" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="189" y="108" text-anchor="middle">pdfplumber</text>
+  <rect x="252" y="92" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="307" y="108" text-anchor="middle">Jinja2</text>
+  <rect x="370" y="92" width="130" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="435" y="108" text-anchor="middle">WeasyPrint</text>
+
+  <rect x="16" y="124" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="71" y="140" text-anchor="middle">openpyxl</text>
+  <rect x="134" y="124" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="189" y="140" text-anchor="middle">smtplib</text>
+  <rect x="252" y="124" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="307" y="140" text-anchor="middle">TypeScript</text>
+  <rect x="370" y="124" width="130" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="435" y="140" text-anchor="middle">Tailwind CSS</text>
+
+  <rect x="16" y="156" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="71" y="172" text-anchor="middle">Pydantic</text>
+  <rect x="134" y="156" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="189" y="172" text-anchor="middle">asyncio</text>
+  <rect x="252" y="156" width="110" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="307" y="172" text-anchor="middle">SSE</text>
+  <rect x="370" y="156" width="130" height="24" rx="4" fill="#fff" stroke="#e5e7eb" stroke-width=".8"/>
+  <text font-size="8.5" font-weight="700" fill="#111827" x="435" y="172" text-anchor="middle">Python 3.11</text>
+</g>
+
+
+<!-- ════════════════════════════════════════════════
      LEGEND
-     ════════════════════════════════════════════════════════════ -->
-<g transform="translate(140,990)">
+     ════════════════════════════════════════════════ -->
+<g transform="translate(140,1370)">
   <text font-size="8" font-weight="700" fill="#9ca3af" x="0" y="10" letter-spacing=".8">LEGEND</text>
 
   <rect x="55" y="2" width="12" height="8" rx="1.5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
@@ -630,30 +780,42 @@ svg{width:100%;max-width:1260px;height:auto;display:block}
   <text class="label-sm" x="194" y="10">Retrieval</text>
   <rect x="240" y="2" width="12" height="8" rx="1.5" fill="#fffbeb" stroke="#d97706" stroke-width="1.5" stroke-dasharray="2 1"/>
   <text class="label-sm" x="256" y="10">Agents</text>
-  <rect x="294" y="2" width="12" height="8" rx="1.5" fill="#f0fdfa" stroke="#0d9488" stroke-width="1"/>
-  <text class="label-sm" x="310" y="10">Verify</text>
-  <rect x="344" y="2" width="12" height="8" rx="1.5" fill="#ecfdf5" stroke="#059669" stroke-width="1"/>
-  <text class="label-sm" x="360" y="10">Output</text>
+  <rect x="294" y="2" width="12" height="8" rx="1.5" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="2 1"/>
+  <text class="label-sm" x="310" y="10">Agentic (independent)</text>
+  <rect x="400" y="2" width="12" height="8" rx="1.5" fill="#ecfdf5" stroke="#059669" stroke-width="1"/>
+  <text class="label-sm" x="416" y="10">Output</text>
 
   <line x1="55" y1="24" x2="75" y2="24" stroke="#ea580c" stroke-width="1.2" stroke-dasharray="3 2"/>
-  <text class="label-sm" x="79" y="28">Gap-fill</text>
-  <line x1="122" y1="24" x2="142" y2="24" stroke="#7c3aed" stroke-width="1.2"/>
-  <text class="label-sm" x="146" y="28">Parallel</text>
-  <circle cx="198" cy="24" r="7" fill="#ea580c"/>
-  <text font-size="6.5" font-weight="800" fill="#fff" x="198" y="27" text-anchor="middle">N</text>
-  <text class="label-sm" x="209" y="28">Step</text>
-  <line x1="238" y1="24" x2="258" y2="24" stroke="#93c5fd" stroke-width="1.2" stroke-dasharray="3 2"/>
-  <text class="label-sm" x="262" y="28">Vision</text>
-  <rect x="296" y="20" width="10" height="8" rx="1.5" fill="#fff" stroke="#93c5fd" stroke-width=".8" stroke-dasharray="2 1"/>
-  <text class="label-sm" x="310" y="28">Cache</text>
+  <text class="label-sm" x="79" y="28">Gap-fill (CA → EX)</text>
+  <line x1="168" y1="24" x2="188" y2="24" stroke="#7c3aed" stroke-width="1.2"/>
+  <text class="label-sm" x="192" y="28">Parallel</text>
+  <circle cx="236" cy="24" r="7" fill="#ea580c"/>
+  <text font-size="6.5" font-weight="800" fill="#fff" x="236" y="27" text-anchor="middle">N</text>
+  <text class="label-sm" x="247" y="28">Step</text>
+  <line x1="278" y1="24" x2="298" y2="24" stroke="#6366f1" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text class="label-sm" x="302" y="28">Uses data (not in pipeline)</text>
 </g>
 
 
-<!-- ════════════════════════════════════════════════════════════
+<!-- ════════════════════════════════════════════════
      FOOTER
-     ════════════════════════════════════════════════════════════ -->
-<text font-size="8.5" font-weight="500" fill="#d1d5db" x="448" y="1048" text-anchor="middle">Python · FastAPI · Claude Sonnet 4 · Voyage-3-large · Voyage rerank-2 · BM25Okapi · PyMuPDF · Next.js 14 · Docker · asyncio</text>
-<text font-size="7.5" font-weight="600" fill="#e5e7eb" x="448" y="1064" text-anchor="middle">Designed &amp; Built by Meet Gajjar</text>
+     ════════════════════════════════════════════════ -->
+<text font-size="9" font-weight="600" fill="#374151" x="700" y="1428" text-anchor="middle">Python · FastAPI · LangGraph · Claude Sonnet 4 · Voyage-3-large · Voyage rerank-2 · BM25 · PyMuPDF · Next.js 14 · MCP · asyncio</text>
+<text font-size="11" font-weight="800" fill="url(#shimmer)" x="700" y="1450" text-anchor="middle" letter-spacing=".5">Designed &amp; Built by Meet Gajjar</text>
+
+<!-- ════════════════════════════════════════════════
+     FLOWING DATA PARTICLES — Main pipeline path
+     ════════════════════════════════════════════════ -->
+<path id="mainFlow" d="M448,135 L448,460 L448,590 L436,665 L436,728 L692,728 L692,858" fill="none" stroke="none"/>
+<circle r="4.5" fill="#ea580c" opacity=".55">
+  <animateMotion dur="6s" repeatCount="indefinite"><mpath href="#mainFlow"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#2563eb" opacity=".5">
+  <animateMotion dur="6s" repeatCount="indefinite" begin="2s"><mpath href="#mainFlow"/></animateMotion>
+</circle>
+<circle r="3" fill="#7c3aed" opacity=".45">
+  <animateMotion dur="6s" repeatCount="indefinite" begin="4s"><mpath href="#mainFlow"/></animateMotion>
+</circle>
 
 </svg>
 </body>
